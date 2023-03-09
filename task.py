@@ -7,7 +7,7 @@ from data.users import User
 from data.jobs import Jobs
 from wtforms.validators import DataRequired
 import datetime
-from data import jobs_api
+from data import jobs_api, users_api
 from requests import get, post, delete, put
 
 
@@ -221,6 +221,7 @@ if __name__ == '__main__':
     session.global_init("db/blogs.db")
     db_session = session.create_session()
     app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(users_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
     
     adding_for_test() #для того чтобы войти в систему
