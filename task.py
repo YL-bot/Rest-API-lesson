@@ -8,11 +8,16 @@ from data.jobs import Jobs
 from wtforms.validators import DataRequired
 import datetime
 from data import jobs_api, users_api
+from flask_restful import reqparse, abort, Api, Resource
 from requests import get, post, delete, put
+from restful_les.users_resource import UsersResource
+from restful_les.users_resource import UsersListResource
+
 
 
 
 app = Flask(__name__)
+api = Api(app)
 
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=365)
@@ -222,6 +227,13 @@ if __name__ == '__main__':
     db_session = session.create_session()
     app.register_blueprint(jobs_api.blueprint)
     app.register_blueprint(users_api.blueprint)
+    
+    # для списка объектов
+    api.add_resource(UsersListResource, '/api/v2/users') 
+
+    # для одного объекта
+    api.add_resource(UsersResource, '/api/v2/users/<int:user_id>')
+    
     app.run(port=8080, host='127.0.0.1')
     
     adding_for_test() #для того чтобы войти в систему
